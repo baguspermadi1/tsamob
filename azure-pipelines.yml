@@ -52,19 +52,19 @@ steps:
     tasks: 'assembleRelease'
 
 
-
-- script: mv android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
-  displayName: 'Rename apk'
-
 - task: AndroidSigning@2
   inputs:
-    apkFiles: '**/*/.apk'
+    apkFiles: 'android/app/build/outputs/apk/release/app-release-unsigned.apk'
     jarsign: true
     jarsignerKeystoreFile: 'sera.jks'
     jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
     jarsignerKeystoreAlias: 'sera'
     jarsignerKeyPassword: '$(jarsignerKeyPassword)'
     zipalign: true
+
+- script: mv android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
+  displayName: 'Rename apk'
+
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: ReactNativePipeline$(Build.BuildNumber).apk
