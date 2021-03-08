@@ -51,6 +51,15 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleRelease'
 
+- script: mv android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
+  displayName: 'Rename apk'
+  
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: ReactNativePipeline$(Build.BuildNumber).apk
+    artifactName: drop
+    publishLocation: 'container'
+
 - task: AndroidSigning@2
   inputs:
     apkFiles: '*/.apk'
@@ -61,14 +70,7 @@ steps:
     jarsignerKeyPassword: '$(jarsignerKeyPassword)'
     zipalign: true
 
-- script: mv android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
-  displayName: 'Rename apk'
-  
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: ReactNativePipeline$(Build.BuildNumber).apk
-    artifactName: drop
-    publishLocation: 'container'
+
 
 - task: AppCenterDistribute@3
   displayName: "Create a release on App Center"
