@@ -1,0 +1,77 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- dev-sprint1
+
+pool:
+  vmImage: ubuntu-latest
+
+
+steps:
+
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: 'sonarqube-bpe-research'
+    scannerMode: 'CLI'
+    configMode: 'file'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner, 
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.exclusions=_TSA_MOB/drop/android/**/*,_TSA_MOB/drop/ios/**/*,_TSA_MOB/drop/__tests__/**/*,_TSA_MOB/drop/assets/**/*
+      sonar.projectKey=tsa-mob:dev
+      sonar.projectName=tsa-mob-dev
+      sonar.projectVersion=1.0
+      sonar.language=php
+      sonar.login=admin
+      sonar.password=admin
+      sonar.branch.*
+      sonar.sources=.
+      sonar.projectBaseDir=$(System.DefaultWorkingDirectory)
+      sonar.host.url=http://serasonarqube.southeastasia.cloudapp.azure.com/
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'npm install and build'
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: 'android'
+    gradleWrapperFile: 'android/gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
+
+- script: mv android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
+  displayName: 'Rename apk'
+  
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: ReactNativePipeline$(Build.BuildNumber).apk
+    artifactName: drop
+    publishLocation: 'container'
+
+- task: AppCenterDistribute@3
+  displayName: "Create a release on App Center"
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev-sprint1'))
+  inputs:
+    serverEndpoint: 'BPE_AppCenter'
+    appSlug: 'SERASI-AUTORAYA/BPE-Research-Android'
+    appFile: 'ReactNativePipeline$(Build.BuildNumber).apk'
+    releaseNotesOption: 'input'
+    releaseNotesInput: |
+      $(Build.SourceVersionMessage)
+      
+      latest source: '$(Build.SourceVersion)'
+      
+      An automated release from Azure DevOps
+    destinationType: 'groups'
