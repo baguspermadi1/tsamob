@@ -41,7 +41,7 @@ steps:
 - task: CacheBeta@1
   displayName: "Set versions"
   inputs:
-    sourcePath: 'ios/ReactNativePipeline/Info.plist'
+    sourcePath: 'ios/TSA_MOB/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(Build.BuildId)'
     printFile: true
@@ -52,7 +52,7 @@ steps:
     actions: 'build'
     configuration: '$(Environment)'
     sdk: 'iphoneos13.2'
-    xcWorkspacePath: 'ios/TSA_MOB'
+    xcWorkspacePath: 'ios/ReactNativePipeline.xcworkspace'
     scheme: 'ReactNativePipeline'
     packageApp: true
     exportPath: 'output/package'
