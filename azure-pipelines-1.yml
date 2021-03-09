@@ -45,6 +45,7 @@ steps:
     configuration: '$(Environment)'
     sdk: 'iphoneos13.2'
     xcWorkspacePath: 'ios/TSA_MOB.xcworkspace'
+    scheme: 'TSA_MOB'
     packageApp: false
     exportPath: 'output/package'
     exportTeamId: 'PZ5SBMF74R'
