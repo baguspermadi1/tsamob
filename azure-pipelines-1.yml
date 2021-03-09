@@ -25,3 +25,9 @@ steps:
   inputs:
     workingDirectory: ios
     forceRepoUpdate: false
+
+- task: InstallAppleCertificate@2
+  displayName: "Install Apple Certificate"
+  inputs:
+    certSecureFile: 'dev-certificate.p12'
+    certPwd: '$(CertificatePassword)'
