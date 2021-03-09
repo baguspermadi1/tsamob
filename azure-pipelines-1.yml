@@ -38,7 +38,7 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'trac_tsa_hoc.mobileprovision'
 
-- task: ios-bundle-version@2
+- task: CacheBeta@1
   displayName: "Set versions"
   inputs:
     sourcePath: 'ios/ReactNativePipeline/Info.plist'
