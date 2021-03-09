@@ -52,7 +52,7 @@ steps:
     actions: 'build'
     configuration: '$(Environment)'
     sdk: 'iphoneos13.2'
-    xcWorkspacePath: 'ios/ReactNativePipeline.xcworkspace'
+    xcWorkspacePath: 'ios/TSA_MOB'
     scheme: 'ReactNativePipeline'
     packageApp: true
     exportPath: 'output/package'
