@@ -23,5 +23,5 @@ steps:
 - task: CocoaPods@0
   displayName: "Install CocoaPods dependencies"
   inputs:
-    workingDirectory: src/ios
+    workingDirectory: ios
     forceRepoUpdate: false
