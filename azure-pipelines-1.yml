@@ -3,6 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+
 trigger:
 - dev-sprint1
 
@@ -38,23 +39,24 @@ steps:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'trac_tsa_hoc.mobileprovision'
 
-
 - task: Xcode@5
-  displayName: "Build Mobile Application"
   inputs:
     actions: 'build'
     configuration: '$(Environment)'
     sdk: 'iphoneos13.2'
     xcWorkspacePath: 'ios/TSA_MOB.xcworkspace'
-    scheme: 'TSA_MOB'
-    packageApp: true
+    packageApp: false
     exportPath: 'output/package'
     exportTeamId: 'PZ5SBMF74R'
     teamId: 'PZ5SBMF74R'
     archivePath: 'output/archive'
-    signingOption: 'auto'
+    signingOption: 'manual'
+    provisioningProfileUuid: '8a3351e4-1f20-43ae-a02b-0d8bb1e1e529'
+    provisioningProfileName: 'trac_tsa_hoc'
     xcodeVersion: 'specifyPath'
     xcodeDeveloperDir: '/Applications/Xcode_11.3.app/Contents/Developer'
+
+
 
 - task: CmdLine@2
   displayName: "Rename build build artifact to include build number"
