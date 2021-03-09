@@ -37,3 +37,26 @@ steps:
   inputs:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: 'trac_tsa_hoc.mobileprovision'
+
+- task: ios-bundle-version@1
+  displayName: "Set versions"
+  inputs:
+    sourcePath: 'ios/ReactNativePipeline/Info.plist'
+    versionCodeOption: 'buildid'
+    versionCode: '$(Build.BuildId)'
+    printFile: true
+
+- task: Xcode@5
+  displayName: "Build Mobile Application"
+  inputs:
+    actions: 'build'
+    configuration: '$(Environment)'
+    sdk: 'iphoneos13.2'
+    xcWorkspacePath: 'ios/ReactNativePipeline.xcworkspace'
+    scheme: 'ReactNativePipeline'
+    packageApp: true
+    exportPath: 'output/package'
+    archivePath: 'output/archive'
+    signingOption: 'auto'
+    xcodeVersion: 'specifyPath'
+    xcodeDeveloperDir: '/Applications/Xcode_11.3.app/Contents/Developer'
