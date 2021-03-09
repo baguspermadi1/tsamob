@@ -49,6 +49,8 @@ steps:
     scheme: 'TSA_MOB'
     packageApp: true
     exportPath: 'output/package'
+    exportTeamId: 'PZ5SBMF74R'
+    teamId: 'PZ5SBMF74R'
     archivePath: 'output/archive'
     signingOption: 'auto'
     xcodeVersion: 'specifyPath'
